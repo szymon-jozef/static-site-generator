@@ -1,0 +1,25 @@
+#include "config.hpp"
+#include <iostream>
+#include <string>
+#include <toml++/impl/parse_error.hpp>
+#include <toml++/impl/parser.hpp>
+#include <toml++/toml.hpp>
+
+Config get_config(const std::string &CONFIG_FILE) {
+  toml::table toml_table;
+  try {
+    toml_table = toml::parse_file(CONFIG_FILE);
+  } catch (const toml::parse_error &err) {
+    std::cerr << "Parsing failed:" << std::endl << err << std::endl;
+  }
+
+  Contact contact = {
+      toml_table["contact"]["author"].value_or(""),
+      toml_table["contact"]["email"].value_or(""),
+      toml_table["contact"]["signal"].value_or(""),
+  };
+
+  Config config = {contact};
+
+  return config;
+}
