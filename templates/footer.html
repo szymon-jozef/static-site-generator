@@ -1,0 +1,11 @@
+<footer>
+    <p>Strona napisana przez: {{author}}</p>
+    <ul>
+        {{if email}}
+        <li><a href="mailto:{{email}}">{{email}}</a></li>
+        {{endif}}
+        {{if signal}}
+        <li><a href="{{signal}}">Signal</a></li>
+        {{endif}}
+    </ul>
+</footer>
