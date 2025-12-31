@@ -19,7 +19,12 @@ Config get_config(const std::string &CONFIG_FILE) {
       toml_table["contact"]["signal"].value_or(""),
   };
 
-  Config config = {contact};
+  General general = {
+      toml_table["general"]["lang"].value_or(""),
+      toml_table["general"]["title"].value_or(""),
+  };
+
+  Config config = {contact, general};
 
   return config;
 }

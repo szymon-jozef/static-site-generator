@@ -1,5 +1,6 @@
 #include "config.hpp"
 #include <catch2/catch_all.hpp>
+#include <catch2/catch_test_macros.hpp>
 #include <string>
 
 TEST_CASE("Checking config file read", "[config]") {
@@ -10,4 +11,6 @@ TEST_CASE("Checking config file read", "[config]") {
   REQUIRE(config.contact.author == "author");
   REQUIRE(config.contact.email == "email@example.com");
   REQUIRE(config.contact.signal == "signal url");
+  REQUIRE(config.general.lang == "en");
+  REQUIRE(config.general.title == "Blog");
 }

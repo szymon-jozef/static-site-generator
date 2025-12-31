@@ -7,8 +7,14 @@ struct Contact {
   std::string signal;
 };
 
+struct General {
+  std::string lang;
+  std::string title;
+};
+
 struct Config {
   Contact contact;
+  General general;
 };
 
 Config get_config(const std::string &CONFIG_FILE);

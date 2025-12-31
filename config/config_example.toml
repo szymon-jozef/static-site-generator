@@ -1,3 +1,7 @@
+[general]
+lang = "en"
+title = "Blog"
+
 [contact]
 author = "author"
 email = "email@example.com"
