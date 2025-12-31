@@ -1,5 +1,4 @@
-# What is this?
-This is a small blog app. Basically a static site generator.
+# What is this? This is a small blog app. Basically a static site generator.
 It uses cpp to create html files from md.
 It also allows for some configuration with `.toml` files.
 
@@ -28,3 +27,7 @@ Also pretty simple. You have:
 Because I wanted a small utility for my personal blog that doesn't have any
 javascript bullshit and is small, but also easy to write blog entries.
 Besides it's a pretty cool project, If I do say so myself.
+
+# Dependencies
+- `Catch2` framework for unit tests
+- `toml++` for toml parsing
