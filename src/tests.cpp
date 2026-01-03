@@ -5,7 +5,7 @@
 #include <string>
 
 TEST_CASE("Checking config file read", "[config]") {
-  const std::string FILE_NAME = "../config/config_example.toml";
+  const std::string FILE_NAME = "../examples/config.toml";
 
   Config config = get_config(FILE_NAME);
 
