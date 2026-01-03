@@ -1,4 +1,5 @@
 #include "config.hpp"
+#include "utils.hpp"
 #include <catch2/catch_all.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <string>
@@ -13,4 +14,10 @@ TEST_CASE("Checking config file read", "[config]") {
   REQUIRE(config.contact.signal == "signal url");
   REQUIRE(config.general.lang == "en");
   REQUIRE(config.general.title == "Blog");
+}
+
+TEST_CASE("convert_string_to_set parses inline YAML string list") {
+  const std::string input = "[\"haha\", \"dupa\", \"xdd\"]";
+  const std::set<std::string> output = {"haha", "dupa", "xdd"};
+  REQUIRE(convert_string_to_set(input) == output);
 }

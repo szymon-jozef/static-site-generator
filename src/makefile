@@ -1,10 +1,12 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall
+TEST_LIBS = -lmd4c-html -lCatch2Main -lCatch2
+LIBS = -lmd4c-html
 
 all: blog
 
-blog: main.o config.o
-	$(CXX) $(CXXFLAGS) main.o config.o -o blog
+blog: main.o config.o utils.o
+	$(CXX) $(CXXFLAGS) main.o config.o -o blog $(LIBS)
 
 main.o: main.cpp config.hpp
 	$(CXX) $(CXXFLAGS) -c main.cpp
@@ -12,8 +14,11 @@ main.o: main.cpp config.hpp
 config.o: config.cpp config.hpp
 	$(CXX) $(CXXFLAGS) -c config.cpp
 
-tests: tests.o config.o
-	g++ -std=c++17 -Wall tests.o config.o -o tests -lCatch2Main -lCatch2
+utils.o: utils.cpp utils.hpp
+	$(CXX) $(CXXFLAGS) -c utils.cpp
+
+tests: tests.o config.o utils.o
+	g++ -std=c++17 -Wall tests.o config.o utils.o -o tests $(TEST_LIBS)
 
 tests.o: tests.cpp config.hpp
 	$(CXX) $(CXXFLAGS) -c tests.cpp
