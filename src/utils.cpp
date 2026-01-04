@@ -5,6 +5,8 @@
 void trim(std::string &str) {
   str.erase(str.find_last_not_of(' ') + 1);
   str.erase(0, str.find_first_not_of(' '));
+  str.erase(str.find_last_not_of('"') + 1);
+  str.erase(0, str.find_first_not_of('"'));
 }
 
 std::set<std::string> convert_string_to_set(std::string input) {

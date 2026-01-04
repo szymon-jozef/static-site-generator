@@ -17,8 +17,11 @@ config.o: config.cpp config.hpp
 utils.o: utils.cpp utils.hpp
 	$(CXX) $(CXXFLAGS) -c utils.cpp
 
-tests: tests.o config.o utils.o
-	g++ -std=c++17 -Wall tests.o config.o utils.o -o tests $(TEST_LIBS)
+markdown.o: markdown.cpp markdown.hpp
+	$(CXX) $(CXXFLAGS) -c markdown.cpp
+
+tests: tests.o config.o utils.o markdown.o
+	g++ -std=c++17 -Wall tests.o config.o utils.o markdown.o -o tests $(TEST_LIBS)
 
 tests.o: tests.cpp config.hpp
 	$(CXX) $(CXXFLAGS) -c tests.cpp

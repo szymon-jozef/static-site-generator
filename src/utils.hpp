@@ -1,7 +1,7 @@
 #include <set>
 #include <string>
 
-// trim string in-place, removing all whitespaces
+// trim string in-place, removing all whitespaces and surrounding '"' symbols
 void trim(std::string &str);
 
 // Convert a string containing an inline YAML/JSON-style list of strings
