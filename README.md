@@ -17,6 +17,7 @@ Every entry is pretty self-explanatory.
 # How does the directory structure works?
 Also pretty simple. You have:
 - `/config` for config files
+- `/examples` example of configuration files. Tests are dependent on it so don't edit the content of these files! You can copy it to `/config` and edit it there.
 - `/out` for ready site. This folder should be on the web server.
 - `/posts` here you write your blog posts. Every file should be in markdown format.
 - `/src` for cpp files. Here's where you run the binary to translate your markdown posts into html.
