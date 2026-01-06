@@ -1,5 +1,6 @@
 #include "markdown.hpp"
 #include "utils.hpp"
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -40,4 +41,34 @@ std::optional<Metadata> get_metadata(const std::string &FILE_PATH) {
   return std::optional(Metadata{metadata_map["author"], metadata_map["date"],
                                 metadata_map["title"],
                                 convert_string_to_set(metadata_map["tags"])});
+}
+
+static void html_callback(const MD_CHAR *data, MD_SIZE size, void *userdata) {
+  std::string *out = static_cast<std::string *>(userdata);
+  out->append(data, size);
+}
+
+std::string get_html(const std::string &FILE_PATH) {
+  std::fstream file(FILE_PATH);
+  std::string buffer, file_string, out;
+  getline(file, buffer);
+  bool is_metadata = buffer == "---";
+
+  /* skip metadata */
+  if (is_metadata) {
+    while (getline(file, buffer)) {
+      if (buffer == "---") {
+        break;
+      }
+    }
+  } else {
+    file_string += buffer + '\n';
+  }
+
+  while (getline(file, buffer)) {
+    file_string += buffer + '\n';
+  }
+
+  md_html(file_string.c_str(), file_string.size(), html_callback, &out, 0, 0);
+  return out;
 }
