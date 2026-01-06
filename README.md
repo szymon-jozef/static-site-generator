@@ -80,7 +80,7 @@ From there you can rsync/push it to your server or do whatever you want to do wi
 # How does the directory structure work?
 Also pretty simple. You have:
 - `/config` for config files. Initially empty so you need to copy it from example dir or make one yourself.
-- `/examples` example of configuration files. Tests are dependent on it so don't edit the content of these files! You can copy it to `/config` and edit it there.
+- `/examples` example of configuration files. You can copy it to `/config` and edit it there.
 - `/out` for processed site.
 - `/posts` here you write your blog posts. Every file should be in markdown format, metadata included!.
 - `/src` for cpp files. Here's where you run the binary to translate your markdown posts into html.

@@ -2,6 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall
 TEST_LIBS = -lmd4c-html -lCatch2Main -lCatch2
 LIBS = -lmd4c-html
+TEST_DIR = tests
 
 all: blog
 
@@ -20,14 +21,14 @@ utils.o: utils.cpp utils.hpp
 markdown.o: markdown.cpp markdown.hpp
 	$(CXX) $(CXXFLAGS) -c markdown.cpp
 
-tests: tests.o config.o utils.o markdown.o
-	g++ -std=c++17 -Wall tests.o config.o utils.o markdown.o -o tests $(TEST_LIBS)
+tests.o: $(TEST_DIR)/tests.cpp config.hpp
+	$(CXX) $(CXXFLAGS) -c $(TEST_DIR)/tests.cpp
 
-tests.o: tests.cpp config.hpp
-	$(CXX) $(CXXFLAGS) -c tests.cpp
+tests: tests.o config.o utils.o markdown.o
+	g++ -std=c++17 -Wall tests.o config.o utils.o markdown.o -o $(TEST_DIR)/tests $(TEST_LIBS)
 
 check: tests
-	./tests
+	$(TEST_DIR)/tests
 
 clean:
-	rm -f *.o blog tests
+	rm -f *.o $(TEST_DIR)/*.o blog $(TEST_DIR)/tests

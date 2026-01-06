@@ -1,13 +1,13 @@
-#include "config.hpp"
-#include "markdown.hpp"
-#include "utils.hpp"
+#include "../config.hpp"
+#include "../markdown.hpp"
+#include "../utils.hpp"
 #include <catch2/catch_all.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <optional>
 #include <string>
 
 TEST_CASE("Checking config file read", "[config]") {
-  const std::string FILE_NAME = "../examples/config.toml";
+  const std::string FILE_NAME = "tests/config.toml";
 
   Config config = get_config(FILE_NAME);
 
@@ -25,7 +25,7 @@ TEST_CASE("convert_string_to_set parses inline YAML string list") {
 }
 
 TEST_CASE("get_metadata function data correctness test") {
-  const std::string FILE_NAME = "../examples/post.md";
+  const std::string FILE_NAME = "./tests//post.md";
   Metadata result = get_metadata(FILE_NAME).value();
 
   std::string expected_author = "joseph";
@@ -43,16 +43,13 @@ TEST_CASE("get_metadata function data correctness test") {
 }
 
 TEST_CASE("get_metadata function test with a file that doesn't have metadata") {
-  const std::string FILE_NAME = "../examples/no_metadata_post.md";
+  const std::string FILE_NAME = ".tests/no_metadata_post.md";
   std::optional<Metadata> result = get_metadata(FILE_NAME);
   REQUIRE(result == std::nullopt);
 }
 
-/* theres to much testing stuff in examples
- * i need to move tests to some other directory with testing files
- */
 TEST_CASE("get_html function parsing test") {
-  const std::string INPUT = "../examples/post.md";
+  const std::string INPUT = "./tests/post.md";
   const std::string EXPECTED_OUTPUT = R"HTML(<h1>This is an example post</h1>
 <p>In this example we will do a couple of cool markdown things.</p>
 <h2>This is a h2 header</h2>
