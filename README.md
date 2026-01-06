@@ -8,10 +8,11 @@ As this is still a WIP, here is a short list of what works and what still needs 
 - [x] config parsing
 - [x] metadata parsing
 - [x] basic tests
-- [ ] parsing markdown
+- [x] parsing markdown
 - [ ] generating html documents
 - [ ] some nicer css styles
 - [ ] more sensible templates
+- [ ] change yaml style metadata to toml?
 
 # What is this? 
 This is a small blog app. Basically a static site generator.
