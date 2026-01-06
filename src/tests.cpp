@@ -47,3 +47,44 @@ TEST_CASE("get_metadata function test with a file that doesn't have metadata") {
   std::optional<Metadata> result = get_metadata(FILE_NAME);
   REQUIRE(result == std::nullopt);
 }
+
+/* theres to much testing stuff in examples
+ * i need to move tests to some other directory with testing files
+ */
+TEST_CASE("get_html function parsing test") {
+  const std::string INPUT = "../examples/post.md";
+  const std::string EXPECTED_OUTPUT = R"HTML(<h1>This is an example post</h1>
+<p>In this example we will do a couple of cool markdown things.</p>
+<h2>This is a h2 header</h2>
+<p><em>This text is written in italic!</em></p>
+<h3>Look at this!</h3>
+<p><strong>This text is BOLD!</strong></p>
+<h2>Hello world!</h2>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello world!&quot; &lt;&lt; std::endl;
+}
+</code></pre>
+<p>This is super cool!</p>
+<h2>Time to link some random website!</h2>
+<p>This <a href="https://example.com">should be clickable</a></p>
+<h2>Image test</h2>
+<p><img src="./image.png" alt="this should show an image"></p>
+<h2>This is an ordered list</h2>
+<ol>
+<li>one</li>
+<li>six</li>
+<li>seven</li>
+</ol>
+<h2>This is an unordered one</h2>
+<ul>
+<li>six</li>
+<li>nine</li>
+<li>six</li>
+<li>nine</li>
+</ul>
+)HTML";
+
+  REQUIRE(get_html(INPUT) == EXPECTED_OUTPUT);
+}
