@@ -1,3 +1,4 @@
 out/
 posts/
+src/tests/tests
 *.o
