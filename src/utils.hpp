@@ -1,4 +1,3 @@
-#include <set>
 #include <string>
 
 // trim string in-place, removing all whitespaces and surrounding '"' symbols
