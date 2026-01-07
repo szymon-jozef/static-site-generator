@@ -51,11 +51,10 @@ std::optional<Metadata> get_metadata(const std::string &FILE_PATH) {
   if (toml_time.is_date()) {
     toml::date d = toml_time.as_date()->get();
 
-    // To convert to a Unix timestamp (time_t):
-    t.tm_year = d.year - 1900; // tm_year is years since 1900
-    t.tm_mon = d.month - 1;    // tm_mon is 0-11
+    t.tm_year = d.year - 1900;
+    t.tm_mon = d.month - 1;
     t.tm_mday = d.day;
-    t.tm_isdst = -1;
+    t.tm_isdst = 0;
 
     timestamp = mktime(&t);
   }

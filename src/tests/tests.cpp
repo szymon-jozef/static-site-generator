@@ -34,6 +34,8 @@ TEST_CASE("get_metadata function data correctness test") {
   datetime.tm_year = 2026 - 1900;
   datetime.tm_mon = 1 - 1;
   datetime.tm_mday = 1;
+  datetime.tm_isdst = 0;
+
   time_t expected_date = mktime(&datetime);
   std::string expected_title = "Example of a blog post";
   std::vector<std::string> expected_tags = {"blog", "test", "lalilulelo"};
