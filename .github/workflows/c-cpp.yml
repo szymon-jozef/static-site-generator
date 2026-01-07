@@ -14,7 +14,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: install dependencies
-      run: sudo apt update && sudo apt install -y g++ catch2 libmd4c-dev libtomlplusplus-dev   
+      run: |
+        sudo apt update
+        sudo apt install -y g++ catch2 libmd4c-dev libmd4c-html0-dev libtomlplusplus-dev
     - name: make
       run: make -C src
     - name: make check
