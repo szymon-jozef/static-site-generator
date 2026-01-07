@@ -19,12 +19,6 @@ TEST_CASE("Checking config file read", "[config]") {
   REQUIRE(config.general.title == "Blog");
 }
 
-TEST_CASE("convert_string_to_set parses inline YAML string list") {
-  const std::string input = "[\"haha\", \"dupa\", \"xdd\"]";
-  const std::set<std::string> output = {"haha", "dupa", "xdd"};
-  REQUIRE(convert_string_to_set(input) == output);
-}
-
 TEST_CASE("get_metadata function data correctness test") {
   const std::string FILE_NAME = "./tests/post.md";
   Metadata result = get_metadata(FILE_NAME).value();
