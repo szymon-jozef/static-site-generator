@@ -1,3 +1,5 @@
+[![C/C++ CI](https://github.com/szymon-jozef/static-site-generator/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/szymon-jozef/static-site-generator/actions/workflows/c-cpp.yml)
+
 # IMPORTANT
 This is still work in progress. It doesn't work yet.
 I pushed it onto github just to have easy access from other computers.
