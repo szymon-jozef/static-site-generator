@@ -1,12 +1,14 @@
+#include <ctime>
 #include <optional>
-#include <set>
 #include <string>
+#include <toml++/toml.hpp>
+#include <vector>
 
 struct Metadata {
   std::string author;
-  std::string date;
+  time_t date;
   std::string title;
-  std::set<std::string> tags;
+  std::vector<std::string> tags;
 };
 
 // Reads the metadata of the markdown file

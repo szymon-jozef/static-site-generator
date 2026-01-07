@@ -3,6 +3,7 @@
 #include "../utils.hpp"
 #include <catch2/catch_all.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <ctime>
 #include <optional>
 #include <string>
 
@@ -25,21 +26,22 @@ TEST_CASE("convert_string_to_set parses inline YAML string list") {
 }
 
 TEST_CASE("get_metadata function data correctness test") {
-  const std::string FILE_NAME = "./tests//post.md";
+  const std::string FILE_NAME = "./tests/post.md";
   Metadata result = get_metadata(FILE_NAME).value();
 
   std::string expected_author = "joseph";
-  std::string expected_date = "2026-01-01";
+  struct tm datetime = {0};
+  datetime.tm_year = 2026 - 1900;
+  datetime.tm_mon = 1 - 1;
+  datetime.tm_mday = 1;
+  time_t expected_date = mktime(&datetime);
   std::string expected_title = "Example of a blog post";
-  std::set<std::string> expected_tags = {"blog", "test", "lalilulelo"};
+  std::vector<std::string> expected_tags = {"blog", "test", "lalilulelo"};
 
   REQUIRE(result.author == expected_author);
   REQUIRE(result.date == expected_date);
   REQUIRE(result.title == expected_title);
-
-  for (const auto &tag : expected_tags) {
-    REQUIRE(result.tags.count(tag));
-  }
+  REQUIRE(result.tags == expected_tags);
 }
 
 TEST_CASE("get_metadata function test with a file that doesn't have metadata") {

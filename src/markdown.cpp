@@ -1,18 +1,22 @@
 #include "markdown.hpp"
 #include "utils.hpp"
-#include <cmath>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <md4c-html.h>
 #include <optional>
+#include <sstream>
+#include <toml++/toml.hpp>
 
 std::optional<Metadata> get_metadata(const std::string &FILE_PATH) {
   std::fstream file(FILE_PATH);
+  std::stringstream metadata_s;
   std::string buffer;
 
+  /* if there's no ---, then no metadata in file there is */
   if (!getline(file, buffer) || buffer != "---") {
-    std::cerr << "File " << FILE_PATH << "does not contain metadata."
+    std::cerr << "File " << FILE_PATH << " does not contain metadata. "
               << std::endl;
     return std::nullopt;
   }
@@ -23,24 +27,43 @@ std::optional<Metadata> get_metadata(const std::string &FILE_PATH) {
     if (buffer == "---") {
       break;
     }
-    size_t colon_pos = buffer.find(":");
-
-    if (colon_pos == std::string::npos) {
-      std::cerr << "The line: \n"
-                << buffer << " does not contain a colon" << std::endl;
-    }
-
-    std::string key = buffer.substr(0, colon_pos);
-    trim(key);
-
-    std::string value = buffer.substr(colon_pos + 1);
-    trim(value);
-    metadata_map[key] = value;
+    metadata_s << buffer << '\n';
   }
 
-  return std::optional(Metadata{metadata_map["author"], metadata_map["date"],
-                                metadata_map["title"],
-                                convert_string_to_set(metadata_map["tags"])});
+  toml::table toml_table = toml::parse(metadata_s);
+  std::vector<std::string> tags;
+  const auto &toml_tags = toml_table["metadata"]["tags"];
+
+  // translate toml into normal vector of strings
+  if (toml_tags.is_array()) {
+    for (auto iter = toml_tags.as_array()->begin();
+         iter < toml_tags.as_array()->end(); iter++) {
+      tags.emplace_back(static_cast<std::string>(iter->as_string()->get()));
+    }
+  }
+
+  // time
+  auto toml_time = toml_table["metadata"]["date"];
+
+  struct tm t = {};
+  time_t timestamp = time(NULL);
+
+  if (toml_time.is_date()) {
+    toml::date d = toml_time.as_date()->get();
+
+    // To convert to a Unix timestamp (time_t):
+    t.tm_year = d.year - 1900; // tm_year is years since 1900
+    t.tm_mon = d.month - 1;    // tm_mon is 0-11
+    t.tm_mday = d.day;
+    t.tm_isdst = -1;
+
+    timestamp = mktime(&t);
+  }
+
+  Metadata metadata = {toml_table["metadata"]["author"].value_or(""), timestamp,
+                       toml_table["metadata"]["title"].value_or(""), tags};
+
+  return std::optional(metadata);
 }
 
 static void html_callback(const MD_CHAR *data, MD_SIZE size, void *userdata) {

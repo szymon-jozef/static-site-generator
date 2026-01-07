@@ -1,8 +1,9 @@
 ---
-author: "joseph"
-date: "2026-01-01"
-title: "Example of a blog post"
-tags: ["blog", "test", "lalilulelo"]
+[metadata]
+author = "joseph"
+date = 2026-01-01
+title = "Example of a blog post"
+tags = ["blog", "test", "lalilulelo"]
 ---
 # This is an example post
 
