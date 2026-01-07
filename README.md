@@ -12,7 +12,7 @@ As this is still a WIP, here is a short list of what works and what still needs 
 - [ ] generating html documents
 - [ ] some nicer css styles
 - [ ] more sensible templates
-- [ ] change yaml style metadata to toml?
+- [x] change yaml style metadata to toml
 
 # What is this? 
 This is a small blog app. Basically a static site generator.
@@ -33,10 +33,11 @@ Every blog post needs to be in a different file in `/posts` directory.
 An example from `/examples/post.md`
 ```md
 ---
-author: "joseph"
-date: "2026-01-01"
-title: "Example of a blog post"
-tags: ["blog", "test", "lalilulelo"]
+[metadata]
+author = "joseph"
+date = 2026-01-01
+title = "Example of a blog post"
+tags = ["blog", "test", "lalilulelo"]
 ---
 # This is an example post
 
@@ -116,20 +117,22 @@ signal = "signal url"
 
 # Metadata explanation
 Metadata is everything at the beginning of the markdown file between `---`.
-It's written in a format similar to yaml.
+It's also written in toml. Why toml? I already use it's parser so it's easy to implement.
+Besides it's readable and easy to write.
 
 ## Fields
 - author – the author of particular blog entry | string
-- date – date of writing an entry | string YYYY-MM-DD
+- date – date of writing an entry | date
 - title – title of blog entry | string
-- tags – tags for blog entry. | json like list
+- tags – tags for blog entry. | array
 
 ## Example
 ```
-author: "joseph"
-date: "2026-01-01"
-title: "Example of a blog post"
-tags: ["blog", "test", "lalilulelo"]
+[metadata]
+author = "joseph"
+date = 2026-01-01
+title = "Example of a blog post"
+tags = ["blog", "test", "lalilulelo"]
 ```
 
 # Why did you do this?
