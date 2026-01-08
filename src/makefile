@@ -22,7 +22,7 @@ markdown.o: markdown.cpp markdown.hpp
 	$(CXX) $(CXXFLAGS) -c markdown.cpp
 
 formatter.o: formatter.cpp formatter.hpp
-	$(CXX) $(CXXFLAGS) -c formatter.hpp
+	$(CXX) $(CXXFLAGS) -c formatter.cpp
 
 tests.o: $(TEST_DIR)/tests.cpp config.hpp
 	$(CXX) $(CXXFLAGS) -c $(TEST_DIR)/tests.cpp
