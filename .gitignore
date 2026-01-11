@@ -1,4 +1,6 @@
 out/
 posts/
 src/build/
-.o
+/src/blog
+/src/tests
+*.o
