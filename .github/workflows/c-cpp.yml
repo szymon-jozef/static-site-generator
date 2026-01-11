@@ -17,8 +17,8 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y g++ catch2 libmd4c-dev libmd4c-html0-dev libtomlplusplus-dev
-    - name: make all
-      run: make all
+    - name: make
+      run: make
     - name: make test
       run: make test
     - name: make clean
