@@ -1,37 +1,51 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall
-TEST_LIBS = -lmd4c-html -lCatch2Main -lCatch2
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -I .
 LIBS = -lmd4c-html
-TEST_DIR = tests
+TEST_LIBS = -lmd4c-html -lCatch2Main -lCatch2
 
-all: blog
+BUILD_DIR = build
 
-blog: main.o config.o utils.o
-	$(CXX) $(CXXFLAGS) main.o config.o -o blog $(LIBS)
+SOURCES = main.cpp \
+          config/config.cpp \
+          format/format.cpp \
+          markdown/markdown.cpp
 
-main.o: main.cpp config.hpp
-	$(CXX) $(CXXFLAGS) -c main.cpp
+OBJECTS = $(SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 
-config.o: config.cpp config.hpp
-	$(CXX) $(CXXFLAGS) -c config.cpp
+TEST_SOURCES = tests.cpp \
+               config/config.cpp \
+               format/format.cpp \
+               markdown/markdown.cpp
 
-utils.o: utils.cpp utils.hpp
-	$(CXX) $(CXXFLAGS) -c utils.cpp
+TEST_OBJECTS = $(TEST_SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 
-markdown.o: markdown.cpp markdown.hpp
-	$(CXX) $(CXXFLAGS) -c markdown.cpp
+TARGET = blog
+TEST_TARGET = tests
 
-formatter.o: formatter.cpp formatter.hpp
-	$(CXX) $(CXXFLAGS) -c formatter.cpp
+.PHONY: all clean test directories
 
-tests.o: $(TEST_DIR)/tests.cpp config.hpp
-	$(CXX) $(CXXFLAGS) -c $(TEST_DIR)/tests.cpp
+all: directories $(TARGET)
 
-tests: tests.o config.o utils.o markdown.o formatter.o
-	g++ -std=c++17 -Wall tests.o config.o utils.o markdown.o formatter.o -o $(TEST_DIR)/tests $(TEST_LIBS)
+directories:
+	@mkdir -p $(BUILD_DIR)/config
+	@mkdir -p $(BUILD_DIR)/format
+	@mkdir -p $(BUILD_DIR)/markdown
 
-check: tests
-	$(TEST_DIR)/tests
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
+
+$(TEST_TARGET): $(TEST_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(TEST_LIBS)
+
+$(BUILD_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+test: directories $(TEST_TARGET)
+	./$(TEST_TARGET)
 
 clean:
-	rm -f *.o $(TEST_DIR)/*.o blog $(TEST_DIR)/tests
+	rm -rf $(BUILD_DIR)
+	rm -f $(TARGET) $(TEST_TARGET)
+
+rebuild: clean all

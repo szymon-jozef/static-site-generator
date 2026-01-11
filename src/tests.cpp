@@ -1,7 +1,6 @@
-#include "../config.hpp"
-#include "../formatter.hpp"
-#include "../markdown.hpp"
-#include "../utils.hpp"
+#include "config/config.hpp"
+#include "format/format.hpp"
+#include "markdown/markdown.hpp"
 #include <catch2/catch_all.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <ctime>
@@ -9,7 +8,7 @@
 #include <string>
 
 TEST_CASE("Checking config file read", "[config]") {
-  const std::string FILE_NAME = "tests/config.toml";
+  const std::string FILE_NAME = "test_files/config.toml";
 
   Config config = get_config(FILE_NAME);
 
@@ -21,7 +20,7 @@ TEST_CASE("Checking config file read", "[config]") {
 }
 
 TEST_CASE("get_metadata function data correctness test") {
-  const std::string FILE_NAME = "./tests/post.md";
+  const std::string FILE_NAME = "./test_files/post.md";
   Metadata result = get_metadata(FILE_NAME).value();
 
   std::string expected_author = "joseph";
@@ -42,13 +41,13 @@ TEST_CASE("get_metadata function data correctness test") {
 }
 
 TEST_CASE("get_metadata function test with a file that doesn't have metadata") {
-  const std::string FILE_NAME = ".tests/no_metadata_post.md";
+  const std::string FILE_NAME = ".test_files/no_metadata_post.md";
   std::optional<Metadata> result = get_metadata(FILE_NAME);
   REQUIRE(result == std::nullopt);
 }
 
 TEST_CASE("get_html function parsing test") {
-  const std::string INPUT = "./tests/post.md";
+  const std::string INPUT = "./test_files/post.md";
   const std::string EXPECTED_OUTPUT = R"HTML(<h1>This is an example post</h1>
 <p>In this example we will do a couple of cool markdown things.</p>
 <h2>This is a h2 header</h2>
@@ -86,7 +85,7 @@ int main() {
 }
 
 TEST_CASE("formatter injection test") {
-  const std::string FILE_NAME = "./tests/formatter.html";
+  const std::string FILE_NAME = "./test_files/formatter.html";
   const std::string EXPECTED_OUTPUT = R"(<!DOCTYPE html>
 <html lang="en">
 <head>
