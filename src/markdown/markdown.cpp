@@ -1,6 +1,5 @@
 #include "markdown.hpp"
 #include <ctime>
-#include <fstream>
 #include <iostream>
 #include <map>
 #include <md4c-html.h>
@@ -8,21 +7,21 @@
 #include <sstream>
 #include <toml++/toml.hpp>
 
-std::optional<Metadata> get_metadata(const std::string &FILE_PATH) {
-  std::fstream file(FILE_PATH);
+std::optional<Metadata> get_metadata(const std::string &FILE_CONTENTS) {
+  std::stringstream file_contents(FILE_CONTENTS);
   std::stringstream metadata_s;
   std::string buffer;
 
   /* if there's no ---, then no metadata in file there is */
-  if (!getline(file, buffer) || buffer != "---") {
-    std::cerr << "File " << FILE_PATH << " does not contain metadata. "
+  if (!getline(file_contents, buffer) || buffer != "---") {
+    std::clog << "File does not contain any metadata. Is this intentional?"
               << std::endl;
     return std::nullopt;
   }
 
   std::map<std::string, std::string> metadata_map;
 
-  while (getline(file, buffer)) {
+  while (getline(file_contents, buffer)) {
     if (buffer == "---") {
       break;
     }
@@ -69,15 +68,15 @@ static void html_callback(const MD_CHAR *data, MD_SIZE size, void *userdata) {
   out->append(data, size);
 }
 
-std::string get_html(const std::string &FILE_PATH) {
-  std::fstream file(FILE_PATH);
+std::string get_html(const std::string &FILE_CONTENTS) {
+  std::stringstream file_contents(FILE_CONTENTS);
   std::string buffer, file_string, out;
-  getline(file, buffer);
+  getline(file_contents, buffer);
   bool is_metadata = buffer == "---";
 
   /* skip metadata */
   if (is_metadata) {
-    while (getline(file, buffer)) {
+    while (getline(file_contents, buffer)) {
       if (buffer == "---") {
         break;
       }
@@ -86,7 +85,7 @@ std::string get_html(const std::string &FILE_PATH) {
     file_string += buffer + '\n';
   }
 
-  while (getline(file, buffer)) {
+  while (getline(file_contents, buffer)) {
     file_string += buffer + '\n';
   }
 

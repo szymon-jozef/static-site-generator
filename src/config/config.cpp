@@ -5,10 +5,10 @@
 #include <toml++/impl/parser.hpp>
 #include <toml++/toml.hpp>
 
-Config get_config(const std::string &CONFIG_FILE) {
+Config get_config(const std::string &CONFIGURATION) {
   toml::table toml_table;
   try {
-    toml_table = toml::parse_file(CONFIG_FILE);
+    toml_table = toml::parse(CONFIGURATION);
   } catch (const toml::parse_error &err) {
     std::cerr << "Parsing failed:" << std::endl << err << std::endl;
   }

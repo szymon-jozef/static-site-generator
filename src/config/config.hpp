@@ -17,4 +17,7 @@ struct Config {
   General general;
 };
 
-Config get_config(const std::string &CONFIG_FILE);
+// @brief Load config into `Config` struct
+// @param CONFIGURATION content of `.toml` file containing configuration
+// @return Config with parsed configuration
+Config get_config(const std::string &CONFIGURATION);
