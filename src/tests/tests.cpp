@@ -1,4 +1,5 @@
 #include "../config.hpp"
+#include "../formatter.hpp"
 #include "../markdown.hpp"
 #include "../utils.hpp"
 #include <catch2/catch_all.hpp>
@@ -82,4 +83,23 @@ int main() {
 )HTML";
 
   REQUIRE(get_html(INPUT) == EXPECTED_OUTPUT);
+}
+
+TEST_CASE("formatter injection test") {
+  const std::string FILE_NAME = "./tests/formatter.html";
+  const std::string EXPECTED_OUTPUT = R"(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    I'm replaced!
+</body>
+</html>
+)";
+  const std::string output =
+      inject_html_into_template(FILE_NAME, "{{replace_me}}", "I'm replaced!");
+  REQUIRE(EXPECTED_OUTPUT == output);
 }

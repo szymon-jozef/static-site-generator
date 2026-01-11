@@ -21,11 +21,14 @@ utils.o: utils.cpp utils.hpp
 markdown.o: markdown.cpp markdown.hpp
 	$(CXX) $(CXXFLAGS) -c markdown.cpp
 
+formatter.o: formatter.cpp formatter.hpp
+	$(CXX) $(CXXFLAGS) -c formatter.cpp
+
 tests.o: $(TEST_DIR)/tests.cpp config.hpp
 	$(CXX) $(CXXFLAGS) -c $(TEST_DIR)/tests.cpp
 
-tests: tests.o config.o utils.o markdown.o
-	g++ -std=c++17 -Wall tests.o config.o utils.o markdown.o -o $(TEST_DIR)/tests $(TEST_LIBS)
+tests: tests.o config.o utils.o markdown.o formatter.o
+	g++ -std=c++17 -Wall tests.o config.o utils.o markdown.o formatter.o -o $(TEST_DIR)/tests $(TEST_LIBS)
 
 check: tests
 	$(TEST_DIR)/tests
