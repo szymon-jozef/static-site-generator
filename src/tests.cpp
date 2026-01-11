@@ -1,5 +1,6 @@
 #include "config/config.hpp"
 #include "format/format.hpp"
+#include "io/io.hpp"
 #include "markdown/markdown.hpp"
 #include <catch2/catch_all.hpp>
 #include <catch2/catch_test_macros.hpp>
@@ -9,13 +10,14 @@
 
 namespace TestFiles {
 constexpr const char *config_toml = R"([general]
-    lang = "en"
-    title = "Blog"
+lang = "en"
+title = "Blog"
 
-    [contact]
-    author = "author"
-    email = "email@example.com"
-    signal = "signal url")";
+[contact]
+author = "author"
+email = "email@example.com"
+signal = "signal url"
+)";
 
 constexpr const char *formatter_html = R"(<!DOCTYPE html>
 <html lang="en">
@@ -75,6 +77,16 @@ This [should be clickable](https://example.com)
 - six
 - nine)";
 } // namespace TestFiles
+
+// IO tests
+TEST_CASE("Test reading a file successful") {
+  std::string result = read_file("./test_files/config.toml");
+  REQUIRE(result == TestFiles::config_toml);
+}
+
+TEST_CASE("Test reading a file that doesn't exist") {
+  REQUIRE_THROWS(read_file("this/path/doesnt/exist"));
+}
 
 TEST_CASE("Checking config file read", "[config]") {
   Config config = get_config(TestFiles::config_toml);
