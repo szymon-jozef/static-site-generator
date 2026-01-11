@@ -1,0 +1,74 @@
+[
+  {
+    "file": "main.cpp",
+    "arguments": [
+      "g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-O2",
+      "-I",
+      ".",
+      "-c",
+      "main.cpp",
+      "-o",
+      "build/main.o"
+    ],
+    "directory": "/home/szymon/Dokumenty/kodowanie/blog/src",
+    "output": "build/main.o"
+  },
+  {
+    "file": "config/config.cpp",
+    "arguments": [
+      "g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-O2",
+      "-I",
+      ".",
+      "-c",
+      "config/config.cpp",
+      "-o",
+      "build/config/config.o"
+    ],
+    "directory": "/home/szymon/Dokumenty/kodowanie/blog/src",
+    "output": "build/config/config.o"
+  },
+  {
+    "file": "format/format.cpp",
+    "arguments": [
+      "g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-O2",
+      "-I",
+      ".",
+      "-c",
+      "format/format.cpp",
+      "-o",
+      "build/format/format.o"
+    ],
+    "directory": "/home/szymon/Dokumenty/kodowanie/blog/src",
+    "output": "build/format/format.o"
+  },
+  {
+    "file": "markdown/markdown.cpp",
+    "arguments": [
+      "g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-O2",
+      "-I",
+      ".",
+      "-c",
+      "markdown/markdown.cpp",
+      "-o",
+      "build/markdown/markdown.o"
+    ],
+    "directory": "/home/szymon/Dokumenty/kodowanie/blog/src",
+    "output": "build/markdown/markdown.o"
+  }
+]
