@@ -8,14 +8,16 @@ BUILD_DIR = build
 SOURCES = main.cpp \
           config/config.cpp \
           format/format.cpp \
-          markdown/markdown.cpp
+          markdown/markdown.cpp \
+		  io/io.cpp
 
 OBJECTS = $(SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 
 TEST_SOURCES = tests.cpp \
                config/config.cpp \
                format/format.cpp \
-               markdown/markdown.cpp
+               markdown/markdown.cpp \
+			   io/io.cpp
 
 TEST_OBJECTS = $(TEST_SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 
