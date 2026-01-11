@@ -1,5 +1,4 @@
 #include "markdown.hpp"
-#include "utils.hpp"
 #include <ctime>
 #include <fstream>
 #include <iostream>
