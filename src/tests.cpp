@@ -31,6 +31,18 @@ constexpr const char *formatter_html = R"(<!DOCTYPE html>
 </body>
 </html>)";
 
+constexpr const char *formated_html = R"(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    I'm formatted!
+</body>
+</html>)";
+
 constexpr const char *no_metadata_post_md = R"(# This markdown has no metadata.
 That's bad. Don't do it. It's for tests only.)";
 
@@ -88,6 +100,8 @@ TEST_CASE("Test reading a file that doesn't exist") {
   REQUIRE_THROWS(read_file("this/path/doesnt/exist"));
 }
 
+// Config tests
+
 TEST_CASE("Checking config file read", "[config]") {
   Config config = get_config(TestFiles::config_toml);
 
@@ -97,6 +111,8 @@ TEST_CASE("Checking config file read", "[config]") {
   REQUIRE(config.general.lang == "en");
   REQUIRE(config.general.title == "Blog");
 }
+
+// Markdown tests
 
 TEST_CASE("get_metadata function data correctness test") {
   Metadata result = get_metadata(TestFiles::post_md).value();
@@ -159,4 +175,11 @@ int main() {
 )HTML";
 
   REQUIRE(get_html(TestFiles::post_md) == EXPECTED_OUTPUT);
+}
+
+// Format tests
+TEST_CASE("Test format_file function with correct data") {
+  REQUIRE(TestFiles::formated_html == format_file(TestFiles::formatter_html,
+                                                  "{{replace_me}}",
+                                                  "I'm formatted!"));
 }
