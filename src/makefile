@@ -31,6 +31,7 @@ all: directories $(TARGET)
 directories:
 	@mkdir -p $(BUILD_DIR)/config
 	@mkdir -p $(BUILD_DIR)/format
+	@mkdir -p $(BUILD_DIR)/io
 	@mkdir -p $(BUILD_DIR)/markdown
 
 $(TARGET): $(OBJECTS)
