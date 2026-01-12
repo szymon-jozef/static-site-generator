@@ -9,7 +9,8 @@ SOURCES = main.cpp \
           config/config.cpp \
           format/format.cpp \
           markdown/markdown.cpp \
-		  io/io.cpp
+		  io/io.cpp \
+		  builder/builder.cpp
 
 OBJECTS = $(SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 
@@ -17,7 +18,8 @@ TEST_SOURCES = tests.cpp \
                config/config.cpp \
                format/format.cpp \
                markdown/markdown.cpp \
-			   io/io.cpp
+			   io/io.cpp \
+			   builder/builder.cpp
 
 TEST_OBJECTS = $(TEST_SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 
@@ -33,6 +35,7 @@ directories:
 	@mkdir -p $(BUILD_DIR)/format
 	@mkdir -p $(BUILD_DIR)/io
 	@mkdir -p $(BUILD_DIR)/markdown
+	@mkdir -p $(BUILD_DIR)/builder
 
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)

@@ -11,10 +11,12 @@ As this is still a WIP, here is a short list of what works and what still needs 
 - [x] metadata parsing
 - [x] basic tests
 - [x] parsing markdown
-- [ ] generating html documents
+- [x] generating html documents
 - [ ] some nicer css styles
 - [ ] more sensible templates
 - [x] change yaml style metadata to toml
+- [ ] cli
+- [ ] perhaps someday gui?
 
 # What is this? 
 This is a small blog app. Basically a static site generator.
