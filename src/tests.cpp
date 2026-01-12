@@ -43,6 +43,46 @@ constexpr const char *formated_html = R"(<!DOCTYPE html>
 </body>
 </html>)";
 
+constexpr const char *formatter_html_conditionally = R"(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+{{if tag}}
+    <p>{{tag}}</p>
+{{endif}}
+</body>
+</html>)";
+
+constexpr const char *formated_html_conditionally = R"(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p>tag</p>
+
+</body>
+</html>)";
+
+constexpr const char *formated_html_conditionally_empty = R"(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+</body>
+</html>)";
+
 constexpr const char *no_metadata_post_md = R"(# This markdown has no metadata.
 That's bad. Don't do it. It's for tests only.)";
 
@@ -182,4 +222,22 @@ TEST_CASE("Test format_file function with correct data") {
   REQUIRE(TestFiles::formated_html == format_file(TestFiles::formatter_html,
                                                   "{{replace_me}}",
                                                   "I'm formatted!"));
+}
+
+TEST_CASE("Test format_file function with no templates") {
+  REQUIRE(TestFiles::formated_html ==
+          format_file(TestFiles::formated_html, "{{replace_me}}", "nothing"));
+}
+
+TEST_CASE("Test format_file_conditionally with tag") {
+  REQUIRE(TestFiles::formated_html_conditionally ==
+          format_file_conditionally(TestFiles::formatter_html_conditionally,
+                                    "{{if tag}}", "{{endif}}", "{{tag}}",
+                                    "tag"));
+}
+
+TEST_CASE("Test format_file_conditionally with empty tag") {
+  REQUIRE(TestFiles::formated_html_conditionally_empty ==
+          format_file_conditionally(TestFiles::formatter_html_conditionally,
+                                    "{{if tag}}", "{{endif}}", "{{tag}}", ""));
 }
