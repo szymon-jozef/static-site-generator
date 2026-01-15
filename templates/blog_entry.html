@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{config.lang}}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{metadata.title}}</title>
+    {{page.head}}
 </head>
 <body>
     <header>
@@ -12,13 +10,12 @@
 
     <main>
         <article>
-            {{content}}
+            {{page.content}}
         </article>
     </main>
 
-
     <footer>
-        {{footer}}
+        {{page.footer}}
     </footer>
 </body>
 </html>

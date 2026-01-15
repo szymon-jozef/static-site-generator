@@ -5,18 +5,33 @@
 std::string build_index(const std::string &TEMPLATE, const Page &PAGE,
                         const Information &INFORMATION) {
   std::string result = TEMPLATE;
-  result = format_file(result, "{{lang}}", INFORMATION.config.general.lang);
-  result = format_file(result, "{{head}}", PAGE.head);
-  result = format_file(result, "{{header}}", PAGE.header);
-  result = format_file(result, "{{main}}", PAGE.main);
-  result = format_file(result, "{{footer}}", PAGE.footer);
+  result =
+      format_file(result, "{{config.lang}}", INFORMATION.config.general.lang);
+  result = format_file(result, "{{page.head}}", PAGE.head);
+  result = format_file(result, "{{page.header}}", PAGE.header);
+  result = format_file(result, "{{page.main}}", PAGE.main);
+  result = format_file(result, "{{page.footer}}", PAGE.footer);
+  return result;
+}
+
+std::string build_blog_entry(const std::string &TEMPLATE, const Page &BLOG,
+                             const Information &INFORMATION) {
+  std::string result = TEMPLATE;
+  result =
+      format_file(result, "{{config.lang}}", INFORMATION.config.general.lang);
+  result = format_file(result, "{{page.head}}", BLOG.head);
+  result = format_file(result, "{{page.header}}", BLOG.header);
+  result =
+      format_file(result, "{{metadata.title}}", INFORMATION.metadata.title);
+  result = format_file(result, "{{page.content}}", BLOG.main);
+  result = format_file(result, "{{page.footer}}", BLOG.footer);
   return result;
 }
 
 std::string build_header(const std::string &TEMPLATE,
                          const Information &INFORMATION) {
   std::string result =
-      format_file(TEMPLATE, "{{title}}", INFORMATION.metadata.title);
+      format_file(TEMPLATE, "{{metadata.title}}", INFORMATION.metadata.title);
   ;
 
   return result;
@@ -25,7 +40,7 @@ std::string build_header(const std::string &TEMPLATE,
 std::string build_head(const std::string &TEMPLATE,
                        const Information &INFORMATION) {
   std::string result =
-      format_file(TEMPLATE, "{{title}}", INFORMATION.metadata.title);
+      format_file(TEMPLATE, "{{metadata.title}}", INFORMATION.metadata.title);
   return result;
 }
 

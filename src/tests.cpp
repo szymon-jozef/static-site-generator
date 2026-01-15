@@ -131,16 +131,30 @@ This [should be clickable](https://example.com)
 - nine)";
 
 constexpr const char *template_index = R"(<!DOCTYPE html>
-<html lang="{{lang}}">
+<html lang="{{config.lang}}">
 <head>
-    {{head}}
+    {{page.head}}
 </head>
 <body>
-    <header>{{header}}</header>
+    <header>{{page.header}}</header>
     <main>
-        {{main}}
+        {{page.main}}
     </main>
-    {{footer}}
+    {{page.footer}}
+</body>
+</html>)";
+
+constexpr const char *template_blog_entry = R"(<!DOCTYPE html>
+<html lang="{{config.lang}}">
+<head>
+    {{page.head}}
+</head>
+<body>
+    <header>{{page.header}}</header>
+    <main>
+        <article>{{page.content}}</article>
+    </main>
+    {{page.footer}}
 </body>
 </html>)";
 
@@ -289,5 +303,39 @@ TEST_CASE("build_index correctly assembles the page", "[builder]") {
 </html>)";
 
   std::string result = build_index(TestFiles::template_index, page, info);
+  REQUIRE(result == expected_output);
+}
+
+TEST_CASE("test build_blog_entry correctly assembles the page", "[builder]") {
+  Config config;
+  config.general.lang = "pl";
+  Metadata metadata;
+
+  Information info;
+  info.config = config;
+  info.metadata = metadata;
+
+  Page page;
+  page.head = "<meta charset='utf-8'><title>Test</title>";
+  page.header = "<nav>Menu</nav>";
+  page.main = "Hej ho!";
+  page.footer = "<footer>Stopka</footer>";
+
+  std::string expected_output = R"(<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset='utf-8'><title>Test</title>
+</head>
+<body>
+    <header><nav>Menu</nav></header>
+    <main>
+        <article>Hej ho!</article>
+    </main>
+    <footer>Stopka</footer>
+</body>
+</html>)";
+
+  std::string result =
+      build_blog_entry(TestFiles::template_blog_entry, page, info);
   REQUIRE(result == expected_output);
 }
