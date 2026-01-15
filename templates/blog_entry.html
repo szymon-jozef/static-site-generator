@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="{{config.lang}}">
 <head>
-{{page.head}}
+    {{page.head}}
 </head>
 <body>
     <header>
-    {{page.header}}
+        <h1>{{metadata.title}}</h1>
     </header>
+
     <main>
-        {{page.main}}
+        <article>
+            {{page.content}}
+        </article>
     </main>
 
     <footer>
