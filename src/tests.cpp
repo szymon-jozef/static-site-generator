@@ -1,3 +1,4 @@
+#include "builder/builder.hpp"
 #include "config/config.hpp"
 #include "format/format.hpp"
 #include "io/io.hpp"
@@ -40,6 +41,46 @@ constexpr const char *formated_html = R"(<!DOCTYPE html>
 </head>
 <body>
     I'm formatted!
+</body>
+</html>)";
+
+constexpr const char *formatter_html_conditionally = R"(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+{{if tag}}
+    <p>{{tag}}</p>
+{{endif}}
+</body>
+</html>)";
+
+constexpr const char *formated_html_conditionally = R"(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p>tag</p>
+
+</body>
+</html>)";
+
+constexpr const char *formated_html_conditionally_empty = R"(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
 </body>
 </html>)";
 
@@ -88,6 +129,21 @@ This [should be clickable](https://example.com)
 - nine
 - six
 - nine)";
+
+constexpr const char *template_index = R"(<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+    {{head}}
+</head>
+<body>
+    <header>{{header}}</header>
+    <main>
+        {{main}}
+    </main>
+    {{footer}}
+</body>
+</html>)";
+
 } // namespace TestFiles
 
 // IO tests
@@ -118,7 +174,7 @@ TEST_CASE("get_metadata function data correctness test") {
   Metadata result = get_metadata(TestFiles::post_md).value();
 
   std::string expected_author = "joseph";
-  struct tm datetime = {0};
+  struct tm datetime = {};
   datetime.tm_year = 2026 - 1900;
   datetime.tm_mon = 1 - 1;
   datetime.tm_mday = 1;
@@ -182,4 +238,56 @@ TEST_CASE("Test format_file function with correct data") {
   REQUIRE(TestFiles::formated_html == format_file(TestFiles::formatter_html,
                                                   "{{replace_me}}",
                                                   "I'm formatted!"));
+}
+
+TEST_CASE("Test format_file function with no templates") {
+  REQUIRE(TestFiles::formated_html ==
+          format_file(TestFiles::formated_html, "{{replace_me}}", "nothing"));
+}
+
+TEST_CASE("Test format_file_conditionally with tag") {
+  REQUIRE(TestFiles::formated_html_conditionally ==
+          format_file_conditionally(TestFiles::formatter_html_conditionally,
+                                    "{{if tag}}", "{{endif}}", "{{tag}}",
+                                    "tag"));
+}
+
+TEST_CASE("Test format_file_conditionally with empty tag") {
+  REQUIRE(TestFiles::formated_html_conditionally_empty ==
+          format_file_conditionally(TestFiles::formatter_html_conditionally,
+                                    "{{if tag}}", "{{endif}}", "{{tag}}", ""));
+}
+
+// Builder tests
+TEST_CASE("build_index correctly assembles the page", "[builder]") {
+  Config config;
+  config.general.lang = "pl";
+  Metadata metadata;
+
+  Information info;
+  info.config = config;
+  info.metadata = metadata;
+
+  Page page;
+  page.head = "<meta charset='utf-8'><title>Test</title>";
+  page.header = "<nav>Menu</nav>";
+  page.main = "<article>Treść wpisu</article>";
+  page.footer = "<footer>Stopka</footer>";
+
+  std::string expected_output = R"(<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset='utf-8'><title>Test</title>
+</head>
+<body>
+    <header><nav>Menu</nav></header>
+    <main>
+        <article>Treść wpisu</article>
+    </main>
+    <footer>Stopka</footer>
+</body>
+</html>)";
+
+  std::string result = build_index(TestFiles::template_index, page, info);
+  REQUIRE(result == expected_output);
 }

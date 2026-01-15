@@ -14,6 +14,8 @@ std::string format_file(const std::string &TEMPLATE_FILE,
 // @param TEMPLATE_FILE File that you want to format in string.
 // @param TEMPLATE Full name of the if statement. For example `{{if title}}`
 // @return Formatted file in std::string
-std::string format_file_condtionally(const std::string &TEMPLATE_FILE,
-                                     const std::string &TEMPLATE,
-                                     const std::string &INPUT);
+std::string format_file_conditionally(const std::string &TEMPLATE_FILE,
+                                      const std::string &START_TAG,
+                                      const std::string &END_TAG,
+                                      const std::string &TEMPLATE,
+                                      const std::string &INPUT);

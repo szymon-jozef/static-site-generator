@@ -1,30 +1,6 @@
 #include "format/format.hpp"
 #include "markdown/markdown.hpp"
-#include <iostream>
 #include <string>
-
-// Replace TEMPLATE with REPLACMENT in-place
-static bool replace_once_global(std::string &STR, const std::string &TEMPLATE,
-                                const std::string &REPLACMENT) {
-  size_t start_pos = STR.find(TEMPLATE);
-  if (start_pos == std::string::npos) {
-    return false;
-  }
-  STR.replace(start_pos, TEMPLATE.length(), REPLACMENT);
-  return true;
-}
-
-// Replace TEMPLATE with REPLACMENT between starting from `start`
-static bool replace_once_between(std::string &STR, const std::string &TEMPLATE,
-                                 const std::string &REPLACMENT,
-                                 const size_t &START) {
-  size_t start_pos = STR.find(TEMPLATE, START);
-  if (start_pos == std::string::npos) {
-    return false;
-  }
-  STR.replace(start_pos, TEMPLATE.length(), REPLACMENT);
-  return true;
-}
 
 // Remove everything from START to STOP
 static bool remove_from_to(std::string &STR, const std::string &START,
@@ -45,46 +21,51 @@ static bool remove_from_to(std::string &STR, const std::string &START,
 
 std::string format_file(const std::string &TEMPLATE_FILE,
                         const std::string &TEMPLATE, const std::string &INPUT) {
-  bool is_template = TEMPLATE_FILE.find(TEMPLATE) != std::string::npos;
   std::string result = TEMPLATE_FILE;
+  size_t current_pos = 0;
 
-  if (!is_template) {
-    std::clog << "There is no template in given file. Is this correct?"
-              << std::endl;
-    return result;
-  }
+  while (true) {
+    size_t found_pos = result.find(TEMPLATE, current_pos);
 
-  while (is_template) {
-    is_template = replace_once_global(result, TEMPLATE, INPUT);
+    if (found_pos == std::string::npos) {
+      break;
+    }
+
+    result.replace(found_pos, TEMPLATE.length(), INPUT);
+    current_pos = found_pos + INPUT.length();
   }
   return result;
 }
 
-std::string format_file_condtionally(const std::string &TEMPLATE_FILE,
-                                     const std::string &TEMPLATE,
-                                     const std::string &INPUT) {
-
-  size_t template_pos = TEMPLATE_FILE.find(TEMPLATE);
-  bool is_template = template_pos != std::string::npos;
-
+std::string format_file_conditionally(const std::string &TEMPLATE_FILE,
+                                      const std::string &START_TAG,
+                                      const std::string &END_TAG,
+                                      const std::string &TEMPLATE,
+                                      const std::string &INPUT) {
   std::string result = TEMPLATE_FILE;
 
-  if (!is_template) {
-    std::clog << "There is no template in given file. Is this correct?"
-              << std::endl;
-    return result;
-  }
-
-  // if template is empty then we remove everything in between
-  if (TEMPLATE == "") {
-    while (is_template) {
-      is_template = remove_from_to(result, TEMPLATE, "{{endif}");
+  if (INPUT.empty()) {
+    while (true) {
+      if (!remove_from_to(result, START_TAG, END_TAG)) {
+        break;
+      }
     }
+  } else {
+    // remove START tag
+    size_t pos = 0;
+    while ((pos = result.find(START_TAG, pos)) != std::string::npos) {
+      result.replace(pos, START_TAG.length(), "");
+    }
+
+    // remove END tag
+    pos = 0;
+    while ((pos = result.find(END_TAG, pos)) != std::string::npos) {
+      result.replace(pos, END_TAG.length(), "");
+    }
+
+    // replace
+    result = format_file(result, TEMPLATE, INPUT);
   }
 
-  while (is_template) {
-    is_template =
-        replace_once_between(result, TEMPLATE, INPUT, result.find(TEMPLATE));
-  }
   return result;
 }
